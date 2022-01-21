@@ -1,5 +1,7 @@
 require_relative './database_connection';
 require_relative './signup'
+require_relative './login'
+require 'io/console'
 
 class ExpenseTracker
   
@@ -27,7 +29,7 @@ class ExpenseTracker
       options.each{ |option|
         puts "%d. %s" % [option[0], option[1]]
       }
-
+      
       print "\nEnter Option:> "
       input = gets.chomp.to_i
 
@@ -35,13 +37,15 @@ class ExpenseTracker
         when 1
           Signup.new(@con)
         when 2
-          puts "login"
+          Login.new(@con)
         when 3
           @con.close()
           puts "Thank you"
+          # sleep(2)
+          puts STDIN.getch
         else
           puts "please select a valid option"
-          readline()
+          STDIN.getch
       end
 
       system("clear")
