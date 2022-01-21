@@ -1,7 +1,7 @@
 require 'pg'
 
 class DatabaseConnection
-
+  attr_accessor :con
   def initialize
     begin
       @con = PG.connect :dbname => 'expense_tracker', :user => 'bikash'
@@ -10,7 +10,6 @@ class DatabaseConnection
     ensure
       if @con
         puts "Connected to database"
-        return @con
       else
         puts "fail connect to database"
       end
