@@ -11,7 +11,7 @@ class DatabaseConnection
       if @con
         puts "Connected to database"
       else
-        puts "fail connect to database"
+        puts "fail to connect to the database"
       end
     end
   end
