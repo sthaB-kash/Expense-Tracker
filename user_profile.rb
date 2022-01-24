@@ -14,7 +14,8 @@ class UserProfile
   def display_user_info()
     system("clear")
     puts "", "*" * 50, "", "expense tracker cli application".upcase, "      (#{user["name"].upcase})", "", "*" * 50, ""
-    puts "Income: \nExpense: \nBalance: ", "", "*" * 50, ""
+    puts "Income: %s\nExpense: %s\nBalance: %s" % balance_summary(), "", "*" * 50, ""
+    
   end
 
   def user_menu
@@ -89,5 +90,21 @@ class UserProfile
       puts "Updated Successfully."
     end
     STDIN.getch
+  end
+  
+  def balance_summary
+    income = get_total_amount("income").to_f
+    expense = get_total_amount("expense").to_f
+    return [income, expense, income - expense]
+  end
+
+  def get_total_amount(category)
+    query = "SELECT sum(amount) FROM transactions WHERE category = '%s' and uid = '%s';" % [category, @user['id']]
+    begin
+      amount = @con.exec(query)[0]["sum"]
+    rescue => exception
+      puts exception.message
+    end
+    return amount
   end
 end
