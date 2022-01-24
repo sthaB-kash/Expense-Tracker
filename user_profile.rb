@@ -1,4 +1,5 @@
 require 'io/console'
+require_relative './transactions_history'
 
 class UserProfile
   attr_accessor :con, :user
@@ -51,13 +52,19 @@ class UserProfile
     name = gets.chomp
     print "Amount: "
     amount = gets.chomp.to_f
-    query = "INSERT INTO %ss(uid, tnx_name, tnx_amount) VALUES('%d', '%s', '%s');" % [category,user['id'], name, amount]
-    puts query, "remaining task"
+    query = "INSERT INTO transactions(uid, tname, amount, date, category) VALUES('%d', '%s', '%f', '%s', '%s');" % [@user['id'], name, amount, Time.now, category]
+    begin
+      if @con.exec(query)
+        puts "Record inserted successfully"
+      end
+    rescue => exception
+      puts exception.message
+    end
+    
     STDIN.getch
   end
 
   def list_tnx
-    puts "here comes a list of transactions"
-    STDIN.getch
+    TransactionsHistory.new(@con, @user)
   end
 end
