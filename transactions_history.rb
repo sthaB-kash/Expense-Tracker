@@ -32,15 +32,21 @@ class TransactionsHistory
     query0 = type == "all" ? ";" : "and category = '#{type}';"
     query = "SELECT * FROM users INNER JOIN transactions ON users.id = transactions.uid WHERE transactions.uid = '#{@user['id']}' #{query0} "
     begin
-      list = @con.exec(query)
-      if list 
-        list.each do |tnx| 
-          puts tnx
-        end
-      end
+      display_transactions(@con.exec(query))
     rescue => exception
       puts exception.message
     end
   end
 
+  def display_transactions(list)
+    puts "", "SN\tID\tName\t\t\tAmount\t\tDate\t\t\tUpdated_at", "*" * 100
+    sn = 0
+    list.each do |tnx|
+      puts "%s.\t%s\t%s\t\t%s%s\t\t%s\t\t%s" % [sn+=1, tnx['tid'], tnx['tname'], insert_tab(tnx['tname']), tnx['amount'], tnx['date'], tnx['updated_at']]
+    end
+  end
+  
+  def insert_tab(str)
+    str.length <7 ? "\t" : ""
+  end
 end
