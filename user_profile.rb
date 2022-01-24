@@ -24,7 +24,8 @@ class UserProfile
         [1, "Add New Transaction(Income)"], 
         [2, "Add New Transaction(Expense)"], 
         [3, "View Transaction History"],
-        [4, "Logout"]
+        [4, "Update Transaction"],
+        [5, "Logout"]
       ].each do |option|
         puts "%s. %s" % [option[0], option[1]]
       end
@@ -38,12 +39,14 @@ class UserProfile
         when 3
           list_tnx()
         when 4
+          update_transaction()
+        when 5
           ;
         else
           puts "invalid option" 
           STDIN.getch
       end
-    end while(choice != 4)
+    end while(choice != 5)
   end
 
   def insert_tnx(category)
@@ -66,5 +69,25 @@ class UserProfile
 
   def list_tnx
     TransactionsHistory.new(@con, @user)
+  end
+
+  def update_transaction
+    display_user_info()
+    print "Enter transaction id:> "
+    tid = gets.chomp
+    puts "", "Enter the following details of transaction:"
+    print "Name: "
+    name = gets.chomp
+    print "Amount: "
+    amount = gets.chomp
+    query = "UPDATE transactions set tname = '%s', amount = '%s', updated_at = '%s' WHERE tid='%s' and uid = '%s';" % [name, amount, Time.now, tid, @user['id']]
+    begin
+      @con.exec(query)
+    rescue => exception
+      puts exception.message
+    else
+      puts "Updated Successfully."
+    end
+    STDIN.getch
   end
 end
