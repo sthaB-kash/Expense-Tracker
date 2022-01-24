@@ -39,14 +39,17 @@ class TransactionsHistory
   end
 
   def display_transactions(list)
-    puts "", "SN\tID\tName\t\t\tAmount\t\tDate\t\t\tUpdated_at", "*" * 100
+    puts "", "SN\tID\tName\t\t\tAmount\t\tDate\t\t\tUpdated_at\t\tCategory", "*" * 115
     sn = 0
     list.each do |tnx|
-      puts "%s.\t%s\t%s\t\t%s%s\t\t%s\t\t%s" % [sn+=1, tnx['tid'], tnx['tname'], insert_tab(tnx['tname']), tnx['amount'], tnx['date'], tnx['updated_at']]
+      puts "%s.\t%s\t%s\t\t%s%s\t\t%s\t%s\t%s%s" % [sn+=1, tnx['tid'], tnx['tname'], insert_tab(tnx['tname']), tnx['amount'], tnx['date'], tnx['updated_at'], insert_tab(tnx['updated_at']), tnx['category']]
     end
   end
   
   def insert_tab(str)
+    if str == nil
+      return "\t\t"
+    end
     str.length <7 ? "\t" : ""
   end
 end
