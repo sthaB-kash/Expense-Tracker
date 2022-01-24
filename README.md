@@ -6,10 +6,11 @@ Expense Tracker is a command line application implemented using Ruby Programming
 To keep track of incomes & expenses of individual users and show remaining balance based on the transactions.
 
 ## Features
-Account creation & login
-Keeping records incomes and expenses
-Transaction history
-Remaining balance
+
+- Account creation & login
+- Keeping records incomes and expenses
+- Transaction history
+- Remaining balance
 
 
 ## Steps for running this cli application
